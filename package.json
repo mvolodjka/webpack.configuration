@@ -1,16 +1,21 @@
 {
   "name": "web",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js --mode production",
+    "dev": "cross-env NODE_ENV=development webpack --config webpack.config.js --mode development"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
+    "@popperjs/core": "^2.11.8",
+    "babel-loader": "^9.1.2",
     "chart.js": "^4.3.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "file-loader": "^6.2.0",
@@ -28,9 +33,19 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "bootstrap": "^5.3.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.7.0",
     "wowjs": "^1.1.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvolodjka/webpack.configuration.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mvolodjka/webpack.configuration/issues"
+  },
+  "homepage": "https://github.com/mvolodjka/webpack.configuration#readme",
+  "description": ""
 }

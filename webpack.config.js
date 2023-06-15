@@ -5,10 +5,21 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
 
+const isDev = process.env.NODE_ENV === "development";
+const isProd = !isDev;
+
+const optimization = () => {
+  const config = {};
+  if (isProd) {
+    config.minimizer = [new CssMinimizerPlugin(), new TerserPlugin()];
+  }
+  return config;
+};
+
 module.exports = {
   mode: "development",
   entry: {
-    filename: path.resolve(__dirname, "src/index.js"),
+    filename: ["@babel/polyfill", path.resolve(__dirname, "src/index.js")],
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -70,20 +81,32 @@ module.exports = {
           filename: "images/[hash][ext][query]", // Розміщуємо фото в папці "images"
         },
       },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
     ],
   },
-  optimization: {
-    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
-  },
+  optimization: optimization(),
+
   plugins: [
     new webpack.ProvidePlugin({
       $: "jquery",
       jQuery: "jquery",
     }),
     new htmlWebpackPlugin({
-      filename: "index.html",
-      template: path.resolve(__dirname, "src/index.html"),
+      // filename: "index.html",
+      template: "src/index.html",
       inject: "body", // Додає <script> в кінець тіла сторінки
+      minify: {
+        collapseWhitespace: isProd,
+      },
       title: "New web application",
     }),
     new MiniCssExtractPlugin({
